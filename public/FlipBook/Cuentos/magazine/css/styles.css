@@ -1,0 +1,90 @@
+/* style.css */
+.back-button {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: bold;
+  z-index: 1000; /* Asegura que el botón esté en la parte superior */
+}
+
+.back-button:hover {
+  background-color: #0056b3;
+}
+
+.magazine-viewport {
+  position: relative;
+}
+
+.next-button,
+.previous-button {
+  position: absolute !important; /* Forzar la posición */
+  top: 50% !important; /* Ajusta esta posición */
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  font-size: 20px;
+  text-align: center;
+  line-height: 40px;
+  border-radius: 50%;
+  z-index: 1000;
+  cursor: pointer;
+}
+
+.next-button {
+  right: 20px;
+}
+
+.previous-button {
+  left: 20px;
+}
+
+.next-button:hover,
+.previous-button:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.new-next-buttonNew,
+.new-previous-buttonNew {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 10px 15px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 1000;
+  width: 80px; /* Aumenta el ancho para que sean más visibles */
+  height: 80px; /* Aumenta la altura para mantener la forma cuadrada */
+}
+
+.next-buttonNew {
+  right: 20px;
+}
+
+.previous-buttonNew {
+  left: 20px;
+}
+
+.new-next-buttonNew {
+  right: 70px; /* Posición al lado del botón existente */
+}
+
+.new-previous-buttonNew {
+  left: 70px; /* Posición al lado del botón existente */
+}
+
+.new-next-buttonNew:hover,
+.new-previous-buttonNew:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}

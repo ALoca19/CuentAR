@@ -1,0 +1,101 @@
+/* Estilo para el botón de volver */
+.back-button {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 8px 15px;
+  font-size: 16px;
+  color: #333;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+.back-button:hover {
+  background-color: #f5f5f5;
+}
+
+.back-button span {
+  font-size: 18px;
+  margin-right: 5px;
+}
+
+/* Estilo para el subtítulo destacado */
+.highlight-title {
+  background-color: #0056b3; /* Azul similar al de la imagen */
+  color: white;
+  display: inline-block;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+/* Ajustes para el contenedor principal */
+.container {
+  max-width: 800px; /* Limita el ancho para que se vea más centrado */
+}
+
+/* Estilo para el índice */
+.list-unstyled li {
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+  color: #333;
+}
+
+/* Ajustes para el título del índice y secciones */
+h4 {
+  font-weight: bold;
+  color: #333;
+}
+
+/* Estilo para listas numeradas */
+ol {
+  margin-left: 20px;
+  font-size: 1.1rem;
+  color: #333;
+}
+
+ol li {
+  margin-bottom: 15px;
+}
+
+ol ul {
+  margin-top: 10px;
+  margin-left: 20px;
+}
+
+/* Estilo para subtítulos de nivel 5 */
+h5 {
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+/* Estilo para las imágenes del manual */
+.manual-image {
+  width: 80%; /* Ocupa el 80% del ancho del contenedor */
+  max-width: 600px; /* Límite máximo para que no se desborde en pantallas grandes */
+  border: 1px solid #ddd; /* Borde suave */
+  border-radius: 5px; /* Bordes redondeados */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+}
+
+/* Ajuste para pantallas pequeñas */
+@media (max-width: 576px) {
+  .manual-image {
+    width: 100%; /* En pantallas pequeñas, ocupa todo el ancho */
+    max-width: 100%; /* Se ajusta al contenedor */
+  }
+}
+
+/* Estilo para el iframe del video (responsivo) */
+iframe {
+  width: 100%;
+  max-width: 560px; /* Tamaño máximo del video */
+  height: 315px;
+}
+
+/* Ajuste para pantallas pequeñas */
+@media (max-width: 576px) {
+  iframe {
+    height: 200px; /* Reduce la altura en pantallas pequeñas */
+  }
+}

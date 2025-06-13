@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Cuento Dinámico - Previsualización</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1050, user-scalable=no" />
+    <link rel="stylesheet" type="text/css" href="css/styles.css" />
+    <script type="text/javascript" src="../../extras/jquery.min.1.7.js"></script>
+    <script type="text/javascript" src="../../extras/modernizr.2.5.3.min.js"></script>
+    <script type="text/javascript" src="../../lib/hash.js"></script>
+</head>
+<body>
+    <!--
+    <a href="../../../index.html" class="back-button">Regresar al Índice</a>
+    <button id="save-button" class="save-button">Guardar Cuento</button>
+-->
+
+    <div id="canvas">
+        <div class="magazine-viewport">
+            <div class="container">
+                <div class="magazine">
+                    <div ignore="1" class="next-button"></div>
+                    <div ignore="1" class="previous-button"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="new-next-buttonNew" style="text-align: center;">
+            Página<br> Siguiente<br>
+            <img src="paginas/FlechaD.png" alt="➔" style="vertical-align: middle; width: 35px;">
+        </div>
+
+        <div class="new-previous-buttonNew" style="text-align: center;">
+            Página<br> Anterior<br>
+            <img src="paginas/FlechaI.png" alt="⬅" style="vertical-align: middle; width: 35px;">
+        </div>
+
+        <!-- Thumbnails dinámicos -->
+        <div class="thumbnails">
+            <div>
+                <ul id="thumbnail-list"></ul>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        function obtenerParametroURL(nombre) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(nombre);
+        }
+
+        const tempDir = obtenerParametroURL("tempDir");
+        const contador = parseInt(obtenerParametroURL("contador"), 10) || 6; // Valor por defecto ajustado a un mínimo razonable
+
+        console.log("Directorio temporal:", tempDir);
+        console.log("Número de páginas:", contador);
+
+        function generateThumbnails(tempDir, numPaginas) {
+            const thumbnailList = document.getElementById('thumbnail-list');
+            thumbnailList.innerHTML = ''; // Limpiar lista
+
+            for (let i = 1; i <= numPaginas; i += 2) {
+                const li = document.createElement('li');
+                if (i === 1 || i === numPaginas) { // Portada o última página
+                    li.className = 'i';
+                    const img = document.createElement('img');
+                    img.src = `${tempDir}/${i}.jpg`;
+                    img.width = 76;
+                    img.height = 100;
+                    img.className = `page-${i}`;
+                    const span = document.createElement('span');
+                    span.textContent = `${i}`;
+                    li.appendChild(img);
+                    li.appendChild(span);
+                } else if (i + 1 <= numPaginas) { // Páginas dobles
+                    li.className = 'd';
+                    const imgLeft = document.createElement('img');
+                    imgLeft.src = `${tempDir}/${i}.jpg`;
+                    imgLeft.width = 76;
+                    imgLeft.height = 100;
+                    imgLeft.className = `page-${i}`;
+                    const imgRight = document.createElement('img');
+                    imgRight.src = `${tempDir}/${i + 1}.jpg`;
+                    imgRight.width = 76;
+                    imgRight.height = 100;
+                    imgRight.className = `page-${i + 1}`;
+                    const span = document.createElement('span');
+                    span.textContent = `${i}-${i + 1}`;
+                    li.appendChild(imgLeft);
+                    li.appendChild(imgRight);
+                    li.appendChild(span);
+                }
+                thumbnailList.appendChild(li);
+            }
+        }
+
+        function loadApp() {
+            $('#canvas').fadeIn(1000);
+            var flipbook = $('.magazine');
+
+            if (flipbook.width() == 0 || flipbook.height() == 0) {
+                setTimeout(loadApp, 10);
+                return;
+            }
+
+            // Generar miniaturas dinámicamente para previsualización
+            generateThumbnails(tempDir, contador);
+
+            flipbook.turn({
+                width: 922,
+                height: 600,
+                duration: 1000,
+                acceleration: !isChrome(),
+                gradients: true,
+                autoCenter: true,
+                elevation: 50,
+                pages: contador, // Limitar al número de páginas recibido
+                when: {
+                    turning: function(event, page, view) {
+                        var book = $(this),
+                            currentPage = book.turn('page'),
+                            pages = book.turn('pages');
+
+                        Hash.go('page/' + page).update();
+                        disableControls(page);
+
+                        $('.thumbnails .page-' + currentPage).parent().removeClass('current');
+                        $('.thumbnails .page-' + page).parent().addClass('current');
+                    },
+                    turned: function(event, page, view) {
+                        disableControls(page);
+                        $(this).turn('center');
+                        if (page == 1) { 
+                            $(this).turn('peel', 'br');
+                        }
+                    },
+                    missing: function(event, pages) {
+                        for (var i = 0; i < pages.length; i++) {
+                            let pageNum = pages[i];
+                            if (pageNum <= contador) { // Solo cargar hasta el límite
+                                let img = $('<img />', {
+                                    src: `${tempDir}/${pageNum}.jpg`,
+                                    class: 'page'
+                                }).css({
+                                    width: '100%',
+                                    height: '100%'
+                                });
+                                flipbook.turn('addPage', img, pageNum);
+                            }
+                        }
+                    }
+                }
+            });
+
+            $('.magazine-viewport').zoom({
+                flipbook: $('.magazine'),
+                max: function() { 
+                    return largeMagazineWidth() / $('.magazine').width();
+                }, 
+                when: {
+                    swipeLeft: function() {
+                        $(this).zoom('flipbook').turn('next');
+                    },
+                    swipeRight: function() {
+                        $(this).zoom('flipbook').turn('previous');
+                    },
+                    resize: function(event, scale, page, pageElement) {
+                        if (scale == 1)
+                            loadSmallPage(page, pageElement);
+                        else
+                            loadLargePage(page, pageElement);
+                    },
+                    zoomIn: function() {
+                        $('.thumbnails').hide();
+                        $('.made').hide();
+                        $('.magazine').removeClass('animated').addClass('zoom-in');
+                        $('.zoom-icon').removeClass('zoom-icon-in').addClass('zoom-icon-out');
+                        if (!window.escTip && !$.isTouch) {
+                            escTip = true;
+                            $('<div />', {'class': 'exit-message'}).
+                                html('<div>Press ESC to exit</div>').
+                                appendTo($('body')).
+                                delay(2000).
+                                animate({opacity:0}, 500, function() {
+                                    $(this).remove();
+                                });
+                        }
+                    },
+                    zoomOut: function() {
+                        $('.exit-message').hide();
+                        $('.thumbnails').fadeIn();
+                        $('.made').fadeIn();
+                        $('.zoom-icon').removeClass('zoom-icon-out').addClass('zoom-icon-in');
+                        setTimeout(function(){
+                            $('.magazine').addClass('animated').removeClass('zoom-in');
+                            resizeViewport();
+                        }, 0);
+                    }
+                }
+            });
+
+            $(document).keydown(function(e){
+                var previous = 37, next = 39, esc = 27;
+                switch (e.keyCode) {
+                    case previous:
+                        $('.magazine').turn('previous');
+                        e.preventDefault();
+                        break;
+                    case next:
+                        $('.magazine').turn('next');
+                        e.preventDefault();
+                        break;
+                    case esc:
+                        $('.magazine-viewport').zoom('zoomOut');	
+                        e.preventDefault();
+                        break;
+                }
+            });
+
+            Hash.on('^page\/([0-9]*)$', {
+                yep: function(path, parts) {
+                    var page = parts[1];
+                    if (page !== undefined) {
+                        if ($('.magazine').turn('is'))
+                            $('.magazine').turn('page', page);
+                    }
+                },
+                nop: function(path) {
+                    if ($('.magazine').turn('is'))
+                        $('.magazine').turn('page', 1);
+                }
+            });
+
+            $(window).resize(function() {
+                resizeViewport();
+            }).bind('orientationchange', function() {
+                resizeViewport();
+            });
+
+            $('.thumbnails').click(function(event) {
+                var page;
+                if (event.target && (page=/page-([0-9]+)/.exec($(event.target).attr('class'))) ) {
+                    $('.magazine').turn('page', page[1]);
+                }
+            });
+
+            $('.thumbnails li').
+                bind($.mouseEvents.over, function() {
+                    $(this).addClass('thumb-hover');
+                }).bind($.mouseEvents.out, function() {
+                    $(this).removeClass('thumb-hover');
+                });
+
+            if ($.isTouch) {
+                $('.thumbnails').
+                    addClass('thumbanils-touch').
+                    bind($.mouseEvents.move, function(event) {
+                        event.preventDefault();
+                    });
+            } else {
+                $('.thumbnails ul').mouseover(function() {
+                    $('.thumbnails').addClass('thumbnails-hover');
+                }).mousedown(function() {
+                    return false;
+                }).mouseout(function() {
+                    $('.thumbnails').removeClass('thumbnails-hover');
+                });
+            }
+
+            if ($.isTouch) {
+                $('.magazine').bind('touchstart', regionClick);
+            } else {
+                $('.magazine').click(regionClick);
+            }
+
+            $('.next-button').bind($.mouseEvents.over, function() {
+                $(this).addClass('next-button-hover');
+            }).bind($.mouseEvents.out, function() {
+                $(this).removeClass('next-button-hover');
+            }).bind($.mouseEvents.down, function() {
+                $(this).addClass('next-button-down');
+            }).bind($.mouseEvents.up, function() {
+                $(this).removeClass('next-button-down');
+            }).click(function() {
+                $('.magazine').turn('next');
+            });
+
+            $('.previous-button').bind($.mouseEvents.over, function() {
+                $(this).addClass('previous-button-hover');
+            }).bind($.mouseEvents.out, function() {
+                $(this).removeClass('previous-button-hover');
+            }).bind($.mouseEvents.down, function() {
+                $(this).addClass('previous-button-down');
+            }).bind($.mouseEvents.up, function() {
+                $(this).removeClass('next-button-down');
+            }).click(function() {
+                $('.magazine').turn('previous');
+            });
+
+            $('.new-next-buttonNew').click(function() {
+                $('.magazine').turn('next');
+            });
+
+            $('.new-previous-buttonNew').click(function() {
+                $('.magazine').turn('previous');
+            });
+
+            resizeViewport();
+            $('.magazine').addClass('animated');
+        }
+
+        // Botón Guardar
+        /*
+        document.getElementById('save-button').addEventListener('click', function() {
+            fetch('/guardar-cuento-definitivo', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ tempDir: tempDir })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Cuento guardado con éxito');
+                    window.location.href = '/index.html';
+                } else {
+                    alert('Error al guardar: ' + data.message);
+                }
+            })
+            .catch(error => alert('Error al guardar: ' + error.message));
+        });
+        */
+       
+        $('#canvas').hide();
+
+        yepnope({
+            test: Modernizr.csstransforms,
+            yep: ['../../lib/turn.js'],
+            nope: ['../../lib/turn.html4.min.js'],
+            both: ['../../lib/zoom.min.js', 'js/magazine.js', 'css/magazine.css'],
+            complete: loadApp
+        });
+    </script>
+</body>
+</html>

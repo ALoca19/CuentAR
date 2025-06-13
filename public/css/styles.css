@@ -1,0 +1,112 @@
+body {
+  background-color: #fdf1c6;
+}
+
+.library-container {
+  border: 1px solid #ddd;
+  background-color: #f9f9f9;
+}
+
+.shelf {
+  position: relative;
+  margin: 20px 0;
+}
+
+.book-container {
+  position: relative;
+  z-index: 1;
+  margin-right: -5px;
+  margin-bottom: 25px; /* Ajusta este valor para controlar cuánto se levantan las portadas */
+}
+
+.book-cover {
+  width: 100%;
+  height: auto;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+}
+
+/* Efecto de zoom al pasar el mouse */
+.book-cover:hover {
+  transform: scale(1.05); /* Aumenta el tamaño de la imagen al pasar el mouse */
+}
+
+/* Fondo de estante con imagen de tablón */
+.estante {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 101%;
+  height: 50%; /* Ajusta la altura según necesites */
+  background-image: url("../Images/Tablon3.png"); /* Reemplaza con la ruta de tu imagen de tablón */
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+  box-shadow: 0px 8px 8px -4px rgba(0, 0, 0, 0.3);
+}
+
+.btn-warning:hover {
+  background: linear-gradient(
+    to right,
+    #e07b00,
+    #d95d00
+  ) !important; /* Colores más oscuros */
+  filter: brightness(0.9); /* Oscurece ligeramente */
+  transform: scale(1.02); /* Ligera animación */
+}
+
+/* Fondo de estante marrón solo en la mitad inferior */
+/*
+.estante {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 101%;
+  height: 50%; /* Ajusta la altura según necesites */
+/* background-color: #8b5a2b;
+  border-radius: 0 0 5px 5px;
+  z-index: 0;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/*
+ .estante {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 101%;
+  height: 50%; 
+  background-image: url("Images/Tablon(1).png"); 
+  background-size: cover;
+  background-position: center;
+  border-radius: 0 0 5px 5px;
+  z-index: 0;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+}
+*/
+
+/* Estilos para el apartado QR */
+.qr-image {
+  width: 250px; /* Ajusta el tamaño del QR */
+  height: auto;
+}
+
+/* Estilos personalizados para los botones de categorías */
+.category-btn {
+  background-color: white;
+  border: 2px solid #ff8c00;
+  color: #333;
+  border-radius: 20px;
+  padding: 5px 15px;
+  margin: 5px;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+.category-btn:hover {
+  background-color: #ffe6cc;
+}
+.category-btn.active {
+  background-color: #ff8c00;
+  color: white;
+  border-color: #ff8c00;
+}

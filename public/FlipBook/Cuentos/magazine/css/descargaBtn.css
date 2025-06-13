@@ -1,0 +1,19 @@
+/* Estilos para el botón de descarga */
+.download-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #ff8c00;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 20px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  z-index: 1000; /* Asegurarse de que esté por encima de otros elementos */
+}
+.download-button:hover {
+  background-color: #e07b00;
+  color: white;
+}

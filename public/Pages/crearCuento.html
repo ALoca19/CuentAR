@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Crear cuento</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .eliminar-btn { background-color: #ff4444; color: white; border: none; padding: 5px 10px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <div class="container mt-3">
+        <a href="../index.html" class="back-button btn btn-light" style="background: linear-gradient(90deg, #a65fd9, #4a90e2); color: white; font-weight: bold;">
+            Volver a la Biblioteca
+        </a>
+
+        <h1 class="text-center">Crea tu cuento</h1>
+    </div>
+
+    
+
+    <form id="cuentoForm" enctype="multipart/form-data">
+        <div class="card shadow rounded-3 mt-4 mx-3">
+          <div class="card-header text-white fw-bold d-flex align-items-center" style="background: linear-gradient(90deg, #a65fd9, #4a90e2);">
+            <i class="bi bi-journal-bookmark-fill me-2"></i> Crea tu cuento
+          </div>
+          
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label fw-bold">Título del cuento:</label>
+                <input type="text" name="tituloCuento" class="form-control" placeholder="Escribe un título fascinante..." required>
+                <label class="form-label fw-bold mt-3">Nombre del autor:</label>
+                <input type="text" name="autor" class="form-control" placeholder="Tu nombre aquí..." required>
+                <label class="form-label fw-bold mt-3">Campo de Aprendizaje:</label>
+                <select name="categoria" class="form-select mt-1" required>
+                  <option value="" disabled selected>Selecciona el campo de aprendizaje</option>
+                  <option value="saberes">Saberes y Pensamiento Critico</option>
+                  <option value="lenguaje">Lenguajes</option>
+                  <option value="humanidades">De lo Humano y lo Comunitario</option>
+                  <option value="etica">Ética, Naturaleza y Sociedades</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-bold">Portada del cuento:</label>
+                <div class="border border-2 border-dashed rounded p-4 text-center upload-area" style="border-style: dashed; cursor: pointer;">
+                    <i class="bi bi-upload fs-1 text-muted"></i>
+                    <p class="text-muted">Arrastra una imagen o haz clic para seleccionar (solo .jpg)</p>
+                    <input type="file" class="form-control mt-2" name="portada" accept="image/jpg" style="max-width: 200px; margin: 0 auto;" required>
+                    <div class="preview-container mt-2" style="display: none;">
+                        <img class="preview-image" style="max-width: 100%; max-height: 200px; object-fit: contain;" alt="Vista previa de la portada">
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="contenido">
+          <h2 class="text-center fw-bold pt-3">Sube tu Contenido</h2>
+          <div>
+            <div id="secciones"></div>
+          </div> 
+        </div>
+
+        <div class="d-flex flex-wrap gap-3 justify-content-center mt-4 pb-4">
+          <button type="button" onclick="agregarSeccion()" class="btn text-white fw-semibold d-flex align-items-center px-4 py-2" style="background: linear-gradient(90deg, #28a745, #20c997); border: none;">
+            <i class="bi bi-plus-circle me-2"></i> Añadir otra sección
+          </button>
+          <button type="button" onclick="eliminarSeccion()" id="btnEliminar" class="btn text-white fw-semibold d-flex align-items-center px-4 py-2" style="background: linear-gradient(90deg, #dc3545, #fd7e14); border: none;">
+            <i class="bi bi-dash-circle me-2"></i> Eliminar última sección
+          </button>
+          <button type="submit" class="btn text-white fw-semibold d-flex align-items-center px-4 py-2" style="background: linear-gradient(90deg, #007bff, #4a90e2); border: none;">
+            <i class="bi bi-save me-2"></i> Guardar cuento
+          </button>
+          <button type="button" id="previsualizar" class="btn fw-semibold d-flex align-items-center px-4 py-2" style="border: 2px solid #c77dff; color: #c77dff; background: transparent;">
+            <i class="bi bi-eye me-2"></i> Previsualizar Cuento
+          </button>
+        </div>
+    </form>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        let contador = 0;
+
+        function setupImagePreview(input, previewImg) {
+            input.addEventListener('change', function() {
+                const file = this.files[0];
+                if (file) {
+                    // Validar que el archivo tenga la extensión .jpg (y no .jpeg ni otros formatos)
+                    const fileExtension = file.name.split('.').pop().toLowerCase();
+                    if (fileExtension !== 'jpg') {
+                        alert('Por favor, selecciona un archivo con extensión .jpg (no .jpeg ni otros formatos).');
+                        input.value = ''; // Limpiar el input
+                        previewImg.parentElement.style.display = 'none';
+                        input.parentElement.querySelector('.text-muted').style.display = 'block';
+                        return;
+                    }
+
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        previewImg.src = e.target.result;
+                        previewImg.parentElement.style.display = 'block';
+                        input.parentElement.querySelector('.text-muted').style.display = 'none';
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const portadaInput = document.querySelector('input[name="portada"]');
+            const portadaPreview = document.querySelector('.preview-image[alt="Vista previa de la portada"]');
+            setupImagePreview(portadaInput, portadaPreview);
+        });
+
+        function agregarSeccion() {
+            contador++;
+            const seccion = document.createElement("div");
+            seccion.className = "seccion";
+            seccion.id = `seccion_${contador}`;
+            seccion.innerHTML = `
+                <div class="card shadow rounded-3 mt-4 mx-3">
+                    <div class="card-header text-white fw-bold d-flex align-items-center" style="background: linear-gradient(90deg, #a65fd9, #4a90e2);">
+                        <i class="bi bi-file-earmark-text me-2"></i> Página ${contador}
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Texto:</label>
+                                <textarea name="texto_${contador}" required class="form-control" rows="7" maxlength="1000" placeholder="Escribe el contenido de esta página..."></textarea>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Imagen:</label>
+                                <div class="border border-2 border-dashed rounded p-4 text-center upload-area" style="border-style: dashed; cursor: pointer;">
+                                    <i class="bi bi-upload fs-1 text-muted"></i>
+                                    <p class="text-muted">Haz clic para seleccionar (solo .jpg)</p>
+                                    <input type="file" name="imagen_${contador}" accept="image/jpg" required class="form-control mt-2" style="max-width: 200px; margin: 0 auto;">
+                                    <div class="preview-container mt-2" style="display: none;">
+                                        <img class="preview-image" style="max-width: 100%; max-height: 200px; object-fit: contain;" alt="Vista previa de la imagen">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Modelo GLB (opcional):</label>
+                            <input type="file" name="glb_${contador}" accept=".glb">
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById("secciones").appendChild(seccion);
+            
+            const imagenInput = seccion.querySelector(`input[name="imagen_${contador}"]`);
+            const imagenPreview = seccion.querySelector('.preview-image');
+            setupImagePreview(imagenInput, imagenPreview);
+            
+            const btnEliminar = document.getElementById("btnEliminar");
+            btnEliminar.disabled = (contador <= 1);
+            btnEliminar.style.background = (contador <= 1) 
+                ? "linear-gradient(90deg, #cccccc, #aaaaaa)" 
+                : "linear-gradient(90deg, #dc3545, #fd7e14)";
+            btnEliminar.style.opacity = (contador <= 1) ? "0.5" : "1";
+            btnEliminar.style.cursor = (contador <= 1) ? "not-allowed" : "pointer";
+        }
+
+        function eliminarSeccion() {
+            if (contador > 1) {
+                const secciones = document.getElementById("secciones");
+                secciones.removeChild(secciones.lastChild);
+                contador--;
+                
+                const btnEliminar = document.getElementById("btnEliminar");
+                btnEliminar.disabled = (contador <= 1);
+                btnEliminar.style.background = (contador <= 1) 
+                    ? "linear-gradient(90deg, #cccccc, #aaaaaa)" 
+                    : "linear-gradient(90deg, #dc3545, #fd7e14)";
+                btnEliminar.style.opacity = (contador <= 1) ? "0.5" : "1";
+                btnEliminar.style.cursor = (contador <= 1) ? "not-allowed" : "pointer";
+            }
+        }
+
+        document.getElementById("cuentoForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            const form = this;
+            if (!form.checkValidity()) {
+                alert('Por favor, completa todos los campos obligatorios.');
+                return;
+            }
+            const formData = new FormData(form);
+            fetch('/guardar-cuento', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    //alert(data.mensaje);
+                    window.location.href = data.redirect;
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            })
+            .catch(error => alert('Hubo un error al guardar el cuento: ' + error.message));
+        });
+
+        document.getElementById("previsualizar").addEventListener("click", function() {
+            const form = document.getElementById("cuentoForm");
+            if (!form.checkValidity()) {
+                alert('Por favor, completa todos los campos obligatorios.');
+                return;
+            }
+
+            const formData = new FormData(form);
+            fetch('/previsualizar-cuento', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const previewUrl = `../FlipBook/Cuentos/magazine/previsualizacion.html?tempDir=${encodeURIComponent(data.tempDir)}&contador=${data.contador}`;
+                    window.open(previewUrl, '_blank');
+                    localStorage.setItem('tempFormData', JSON.stringify(data.formData));
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            })
+            .catch(error => alert('Hubo un error al previsualizar el cuento: ' + error.message));
+        });
+
+        // Inicializar con una sección
+        agregarSeccion();
+        document.getElementById("btnEliminar").disabled = true;
+        document.getElementById("btnEliminar").style.background = "linear-gradient(90deg, #cccccc, #aaaaaa)";
+        document.getElementById("btnEliminar").style.opacity = "0.5";
+        document.getElementById("btnEliminar").style.cursor = "not-allowed";
+    </script>
+</body>
+</html>

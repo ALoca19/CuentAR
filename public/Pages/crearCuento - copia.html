@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Crear cuento</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .seccion { margin: 20px 0; border: 1px solid #ccc; padding: 10px; }
+        .eliminar-btn { background-color: #ff4444; color: white; border: none; padding: 5px 10px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1 class="text-center">Crea tu cuento</h1>
+    
+    <form id="cuentoForm" enctype="multipart/form-data">
+        <div>
+            <label>Título del cuento:</label><br>
+            <input type="text" name="tituloCuento" required>
+        </div>
+
+        <div>
+            <label>Nombre del autor:</label><br>
+            <input type="text" name="autor" required>
+        </div>
+        
+        <div>
+            <label>Portada del cuento:</label><br>
+            <input type="file" name="portada" accept="image/*" required>
+        </div>
+
+        <div id="contenido">
+            <h2>Contenido</h2>
+            <div id="secciones"></div>
+            <button type="button" onclick="agregarSeccion()">Añadir otra sección</button>
+        </div>
+        
+        <button type="button" onclick="eliminarSeccion()" id="btnEliminar">Eliminar última sección</button>
+        <br>
+        <button type="submit">Guardar cuento</button>
+    </form>
+
+    <a href="#" id="previsualizar" class="button">Previsualizar Cuento</a>
+    
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        let contador = 0; // Contador sigue siendo el número de secciones
+
+        function agregarSeccion() {
+            contador++;
+            const seccion = document.createElement("div");
+            seccion.className = "seccion";
+            seccion.id = `seccion_${contador}`;
+            seccion.innerHTML = `
+                <h3>Página ${contador}</h3>
+                <label>Imagen:</label><br>
+                <input type="file" name="imagen_${contador}" accept="image/*" required><br>
+                <label>Texto:</label><br>
+                <textarea name="texto_${contador}" required></textarea><br>
+                <label>Modelo GLB:</label><br>
+                <input type="file" name="glb_${contador}" accept=".glb" required><br>
+            `;
+            
+            document.getElementById("secciones").appendChild(seccion);
+            
+            document.getElementById("btnEliminar").disabled = (contador <= 1);
+            document.getElementById("btnEliminar").style.backgroundColor = 
+                (contador <= 1) ? "#cccccc" : "#ff0000";
+        }
+
+        function eliminarSeccion() {
+            if (contador > 1) {
+                const secciones = document.getElementById("secciones");
+                secciones.removeChild(secciones.lastChild);
+                contador--;
+            }
+        }
+
+        document.getElementById("cuentoForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            
+            const form = this;
+            if (!form.checkValidity()) {
+                alert('Por favor, completa todos los campos obligatorios.');
+                return;
+            }
+
+            const formData = new FormData(form);
+            fetch('/guardar-cuento', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                alert(data); // Muestra "Cuento guardado en ... con ID X y Y páginas"
+                
+                // Extraer el ID y el número de páginas de la respuesta del servidor
+                const idMatch = data.match(/ID (\d+)/);
+                const paginasMatch = data.match(/(\d+) páginas/);
+                
+                if (idMatch && paginasMatch) {
+                    const id = idMatch[1];
+                    const paginas = paginasMatch[1];
+                    
+                    // Actualizar el enlace de previsualización con el ID y número de páginas
+                    const previsualizarLink = document.getElementById("previsualizar");
+                    previsualizarLink.href = `../FlipBook/Cuentos/magazine/previsualizacion.html?cuento=cuento_${id}&contador=${paginas}`;
+                    previsualizarLink.textContent = "Previsualizar Cuento (Guardado)";
+                    previsualizarLink.style.pointerEvents = "auto"; // Habilitar el enlace
+                    previsualizarLink.style.opacity = "1"; // Hacerlo visible/opaco
+                }
+            })
+            .catch(error => alert('Hubo un error al guardar el cuento: ' + error.message));
+        });
+
+        document.getElementById("previsualizar").addEventListener("click", function(event) {
+            event.preventDefault();
+            // Si el cuento no se ha guardado aún, mostrar mensaje y no hacer nada
+            if (this.href === "#") {
+                alert("Por favor, guarda el cuento primero para previsualizarlo.");
+            } else {
+                // Si ya tiene un href válido (después de guardar), redirigir
+                window.location.href = this.href;
+            }
+        });
+
+        // Inicializar con una sección y deshabilitar previsualización hasta guardar
+        agregarSeccion();
+        document.getElementById("previsualizar").style.pointerEvents = "none"; // Deshabilitar clic inicialmente
+        document.getElementById("previsualizar").style.opacity = "0.5"; // Visualmente deshabilitado
+    </script>
+</body>
+</html>
+

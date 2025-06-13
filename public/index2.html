@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Biblioteca de Cuentos</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    .logo-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .logo-img {
+      max-height: 100px;
+      width: auto;
+    }
+    .credits-link {
+      color: white;
+      text-decoration: underline;
+      transition: color 0.3s;
+    }
+    .credits-link:hover {
+      color: #fdf1c6;
+    }
+  </style>
+</head>
+<body style="background-color: #fdf1c6;">
+
+  <div class="container mt-5">
+    <!-- Logo añadido aquí -->
+    <div class="logo-container">
+      <img src="Images/logo.png" alt="Logo Biblioteca de Cuentos" class="logo-img">
+    </div>
+    
+    <h1 class="text-center mb-4" style="color: #8b4513;">Biblioteca de Cuentos</h1>
+    <p class="text-center mb-4" style="color: #8b4513;">¡Bienvenido a nuestra biblioteca de cuentos! Aquí podrás explorar y crear cuentos con realidad aumentada.</p>
+  
+    <div class="text-center mb-4">
+      <button type="button" class="btn btn-warning btn-lg fw-bold text-white shadow-lg px-5 py-3 rounded-pill" style="background: linear-gradient(to right, #ff8c00, #ff6a00); border: none; transition: transform 0.3s ease;" onclick="window.location.href='Pages/crearCuento.html'">
+        ✨ Crear tu cuento ✨
+      </button>
+      <!-- Botón para la guía -->
+      <div class="mt-3">
+        <button type="button" class="btn btn-secondary btn-sm shadow-sm px-3 py-2 rounded-pill" style="border: none; transition: transform 0.3s ease;" onclick="window.location.href='Pages/guia.html'">
+          📖 Guía para subir tu cuento
+        </button>
+      </div>
+    </div>
+
+    <div class="row align-items-start mb-4">
+      <div class="col-md-6">
+        <div class="p-4 bg-white rounded shadow">
+          <h2 style="color: #b36b00; text-align: center;">Biblioteca de cuentos con realidad aumentada</h2>
+          <p>Explora nuestra colección única de cuentos que cobran vida a través de la magia de la realidad aumentada. Cada libro es una puerta a un mundo de imaginación y aventura, donde las historias saltan de las páginas directamente a tu realidad. Perfecto para lectores de todas las edades que buscan una experiencia de lectura verdaderamente inmersiva y emocionante.</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="p-4 bg-white rounded shadow d-flex align-items-center">
+          <img src="Images/QR.png" alt="QR para realidad virtual" class="qr-image me-3">
+          <div>
+            <h3 style="color: #b36b00; text-align: center;">QR para realidad virtual</h3>
+            <p>Escanea este código QR para acceder a la página de realidad virtual de nuestros cuentos. Visualiza los libros en un formato interactivo y sumérgete en la experiencia de realidad aumentada.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <!-- Botones de categorías -->
+        <h2 style="color: #b36b00; text-align: center;">Categorías</h2>
+        <div class="d-flex justify-content-center flex-wrap mb-4">
+          <button type="button" class="category-btn active" onclick="filtroCategoria('todos')" data-category="todos">Todos</button>
+          <button type="button" title="Saberes y Pensamiento Critico" class="category-btn" onclick="filtroCategoria('saberes')" data-category="saberes">Saberes y Pensamiento Critico</button>
+          <button type="button" title="Lenguajes" class="category-btn" onclick="filtroCategoria('lenguaje')" data-category="lenguaje">Lenguajes</button>
+          <button type="button" title="De lo Humano y lo Comunitario" class="category-btn" onclick="filtroCategoria('humanidades')" data-category="humanidades">De lo Humano y lo Comunitario</button>
+          <button type="button" title="Ética, Naturaleza y Sociedades" class="category-btn" onclick="filtroCategoria('etica')" data-category="etica">Ética, Naturaleza y Sociedades</button>
+        </div>
+       
+        <div class="library-container bg-light rounded shadow p-4" style="width: 100%; height: auto;" id="library-container">
+          <!-- Los estantes se generarán dinámicamente aquí -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer con créditos mejorados -->
+  <footer class="text-center text-lg-start mt-5" style="background: linear-gradient(to right, #ff8c00, #ff6a00); color: white;">
+    <div class="container p-4">
+      <div class="row">
+        <div class="col-lg-4 col-md-12 mb-4 mb-md-0">
+          <h5 class="text-uppercase fw-bold">Biblioteca de Cuentos</h5>
+          <p>
+            Sumérgete en un mundo de historias mágicas con realidad aumentada. ¡Crea y comparte tus propios cuentos!
+          </p>
+          <!-- Logo en el footer -->
+          <img src="Images/logo.png" alt="Logo Biblioteca de Cuentos" style="max-height: 60px; width: auto;">
+        </div>
+        <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+          <h5 class="text-uppercase fw-bold">Enlaces</h5>
+          <ul class="list-unstyled mb-0">
+            <li>
+              <a href="Pages/guia.html" class="text-white text-decoration-none">Guía para subir tu cuento</a>
+            </li>
+            <li class="mt-2">
+              <a href="Pages/creditos.html" class="credits-link">Ver créditos completos</a>
+            </li>
+          </ul>
+        </div>
+        <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+          <h5 class="text-uppercase fw-bold">Créditos</h5>
+          <p class="mb-1">Desarrollado por: [Nombre del Desarrollador]</p>
+          <p class="mb-1">Diseño: [Nombre del Diseñador]</p>
+          <p class="mb-1">Proyecto: [Nombre del Proyecto/Institución]</p>
+        </div>
+      </div>
+    </div>
+    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+      © 2025 Biblioteca de Cuentos. Todos los derechos reservados.
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Libros existentes
+    const librosExistentes = [
+      { title: "Soñando con la Luna", img: "Images/Portada1.jpg", link: "FlipBook/Cuentos/magazine/CuentoEclipse.html", categoria: "saberes" },
+      { title: "La aventura de Max", img: "Images/Portada2.png", link: "FlipBook/Cuentos/magazine/CuentoBosque.html", categoria: "saberes" },
+      { title: "El mago geometrus", img: "Images/Portada3.jpg", link: "FlipBook/Cuentos/magazine/CuentoFiguras.html", categoria: "saberes" }
+    ];
+
+    // Función para renderizar los libros en estantes dinámicos
+    function renderizarLibros(libros) {
+      const libraryContainer = document.getElementById("library-container");
+      libraryContainer.innerHTML = ""; // Limpiar el contenedor
+
+      // Agrupar los libros en estantes (máximo 6 por estante)
+      const librosPorEstante = 6;
+      for (let i = 0; i < libros.length; i += librosPorEstante) {
+        const grupoLibros = libros.slice(i, i + librosPorEstante);
+
+        // Crear un nuevo estante
+        const shelf = document.createElement("div");
+        shelf.className = "shelf mb-4";
+        shelf.id = `shelf${i / librosPorEstante + 1}`;
+
+        // Crear el contenedor de libros dentro del estante
+        const shelfBooks = document.createElement("div");
+        shelfBooks.className = "row justify-content-center position-relative";
+        shelfBooks.id = `shelf${i / librosPorEstante + 1}-books`;
+
+        // Añadir los libros al estante
+        grupoLibros.forEach(libro => {
+          // Determinar el enlace dinámico según si es un libro existente o dinámico
+          const enlace = libro.id 
+            ? `FlipBook/Cuentos/magazine/CuentosGeneral.html?cuento=cuento_${libro.id}&num=${libro.paginas}` 
+            : libro.link;
+
+          const libroHTML = `
+            <div class="col-2 book-container">
+              <a href="${enlace}">
+                <img src="${libro.img}" class="book-cover" alt="${libro.title}">
+              </a>
+            </div>
+          `;
+          shelfBooks.innerHTML += libroHTML;
+        });
+
+        // Añadir el estante visual (línea)
+        const estanteLinea = document.createElement("div");
+        estanteLinea.className = "estante";
+
+        // Añadir el contenedor de libros y la línea al estante
+        shelf.appendChild(shelfBooks);
+        shelf.appendChild(estanteLinea);
+
+        // Añadir el estante al contenedor de la librería
+        libraryContainer.appendChild(shelf);
+      }
+    }
+
+    // Variable global para almacenar todos los cuentos
+    let todosLosLibros = [];
+
+    // Cargar cuentos dinámicos desde el backend
+    async function cargarCuentos() {
+      try {
+        const response = await fetch('/api/cuentos');
+        const cuentosDinamicos = await response.json();
+        todosLosLibros = [...librosExistentes, ...cuentosDinamicos];
+        renderizarLibros(todosLosLibros); // Mostrar todos inicialmente
+      } catch (error) {
+        console.error('Error al cargar los cuentos:', error);
+        todosLosLibros = [...librosExistentes];
+        renderizarLibros(todosLosLibros); // Renderiza solo los existentes si falla
+      }
+    }
+
+    // Función para filtrar cuentos por categoría y resaltar el botón seleccionado
+    function filtroCategoria(categoria) {
+      // Filtrar libros según la categoría
+      let librosFiltrados = [];
+      if (categoria === 'todos') {
+        librosFiltrados = todosLosLibros;
+      } else {
+        librosFiltrados = todosLosLibros.filter(libro => libro.categoria === categoria);
+      }
+      renderizarLibros(librosFiltrados);
+
+      // Resaltar el botón seleccionado
+      const buttons = document.querySelectorAll('.category-btn');
+      buttons.forEach(btn => {
+        if (btn.getAttribute('data-category') === categoria) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", cargarCuentos);
+  </script>
+</body>
+</html>
