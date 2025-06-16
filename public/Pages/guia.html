@@ -17,25 +17,109 @@
   </div>
 
   <!-- Contenedor principal -->
-  <div class="container mt-4">
-    <div class="p-4 bg-white rounded shadow mb-4">
-      <!-- Título con ícono -->
-      <h2 class="d-flex align-items-center" style="color: #b36b00;">
-        <span class="me-2">📖</span> Manual de usuario
-      </h2>
-     
-      <!-- Texto descriptivo -->
-      <p class="mt-3">
-        Este manual te guiará a través de todas las funciones y características de nuestra plataforma para que puedas aprovechar al máximo la experiencia de lectura interactiva.
-      </p>
-     
-      <!-- Sección: Cómo cargar tu cuento en la plataforma -->
-      <h4 class="mt-4" id="cargar-cuento">Cómo cargar tu cuento en la plataforma</h4>
-      <p>En esta sección aprenderás cómo subir tu cuento a la plataforma "Biblioteca de Cuentos" para que los niños puedan disfrutarlo.</p>
-      
-      <!-- Nueva sección: Cosas que necesitas -->
-      <h5 class="mt-4">Cosas que necesitas</h5>
-      <p>Antes de comenzar, asegúrate de tener lo siguiente listo:</p>
+<div class="container mt-4">
+  <div class="p-4 bg-white rounded shadow mb-4">
+    <!-- Título con ícono -->
+    <h2 class="d-flex align-items-center" style="color: #b36b00;">
+      <span class="me-2">📖</span> Manual de usuario
+    </h2>
+
+    <!-- Nueva sección: Resumen de la guía -->
+    <h4 class="mt-4">Guía para crear cuentos</h4>
+    <p>¡Crea cuentos interactivos para niños con nuestra guía paso a paso!<br>
+       "Explora los pasos", aquí encontratas: 
+       <ul>
+      <li><strong>Análisis:</strong> Elige tu público, un tema de aprendizaje y una idea para la historia.</li>
+      <li><strong>Diseño:</strong> Escribe el cuento, diseña imágenes y prepara modelos 3D.</li>
+      <li><strong>Implementación:</strong> Sube tu cuento a la plataforma "Biblioteca de Cuentos".</li>
+      </ul>
+          ¡Descarga la guía completa para más detalles!</p>
+    <p class="text-center">
+      <a href="../assets/guia/GuiaCompleta.pdf" class="btn btn-success" download>Descargar Guía Completa (PDF)</a>
+    </p>
+
+    <!-- Nueva sección: Pestañas para cada paso -->
+    <h4 class="mt-4">Explora los pasos para crear tu cuento</h4>
+    <ul class="nav nav-tabs" id="guideTabs" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="analisis-tab" data-bs-toggle="tab" data-bs-target="#analisis" type="button" role="tab" aria-controls="analisis" aria-selected="true">Análisis</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="diseno-tab" data-bs-toggle="tab" data-bs-target="#diseno" type="button" role="tab" aria-controls="diseno" aria-selected="false">Diseño</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="implementacion-tab" data-bs-toggle="tab" data-bs-target="#implementacion" type="button" role="tab" aria-controls="implementacion" aria-selected="false">Implementación</button>
+      </li>
+    </ul>
+    <div class="tab-content mt-3" id="guideTabsContent">
+      <!-- Contenido de las pestaña Analisis -->
+      <div class="tab-pane fade show active" id="analisis" role="tabpanel" aria-labelledby="analisis-tab">
+        <p>Antes de escribir, necesitas definir un tema y un personaje principal de la historia</p>
+        <ul>
+          <li>Consejo: Revisa el currículo de la SEP para temas por grado.</li>
+          <li>Consejo: Inventa un personaje divertido, como un mago o animal.</li>
+        </ul>
+        <p>Piensa en el personaje protagonista de la obra y una problemática o aventura que tiene que pasar para abarcar tu tema elegido en la historia.  </p>
+      </div>
+
+      <!-- Contenido de las pestaña Diseño -->
+      <div class="tab-pane fade" id="diseno" role="tabpanel" aria-labelledby="diseno-tab">
+        
+        <p>Aquí aprenderás a escribir tu cuento, diseñar sus imágenes y preparar modelos 3D.</p>
+
+        <!-- Escribir el cuento -->
+        <h5 class="mt-4">Escribe el cuento</h5>
+        <p>Estructura tu cuento con una introducción, un desarrollo y un final.<br>
+           Divide la historia en partes cortas, una por página, con un máximo de <strong> 300 caracteres por página. </strong><br>
+           Puedes seguir la siguiente estructura:
+        </p>
+          
+        <ul>
+          <li><strong>Introducción:</strong> Presenta al protagonista y su mundo.</li>
+          <li><strong>Desarrollo:</strong> Describe un reto o aventura ligado al tema de aprendizaje.</li>
+          <li><strong>Final:</strong> Resuelve el problema y refuerza el aprendizaje.</li>
+          <li>Consejo: Usa herramientas de IA como Grok o ChatGPT para ideas (ej. "Escribe un cuento sobre figuras geométricas para 4º grado").</li>
+        </ul>
+
+        <!-- Diseñar las imágenes -->
+        <h5 class="mt-4">Crea las imágenes</h5>
+        <p>Diseña una imagen para cada página y una para la portada, en formato .jpg. Puedes dibujar y colorear a mano, escanear tus dibujos, o usar herramientas de inteligencia artificial para crear imágenes rápidamente.</p>
+        <ul>
+          <li><strong>Opciones:</strong>
+            <ul>
+              <li>Dibuja a mano y escanea o fotografía tus dibujos.</li>
+              <li>Usa herramientas de IA como Canva, DALL-E o Grok (Mayor detalle en la guia completa).</li>
+            </ul>
+          </li>
+          <li><strong>Portada:</strong> Crea una imagen cuadrada para la portada que incluya el título del cuento.</li>
+          <li>Consejo: Convierte imágenes a .jpg gratis en <a href="https://www.iloveimg.com/es/convertir-a-jpg" target="_blank">iloveimg.com</a>.</li>
+        </ul>
+
+        <!-- Crear modelos 3D -->
+        <h5 class="mt-4">Prepara modelos 3D (opcional)</h5>
+        <p>Los modelos 3D para realidad aumentada son opcionales.</p>
+        <ul>
+          <li><strong>Opciones:</strong>
+            <ul>
+              <li>Crea modelos en herramientas como Blender.</li>
+              <li>Descarga modelos gratis o compra en sitios como Sketchfab o Unity Store.</li>
+            </ul>
+          </li>
+          <li>Consejo: Asegúrate de que el modelo coincida con la imagen y el texto.</li>
+        </ul>
+      </div>
+
+      <!-- Contenido de las pestaña Implementación -->
+      <div class="tab-pane fade" id="implementacion" role="tabpanel" aria-labelledby="implementacion-tab">
+        <p>En esta sección aprenderás cómo subir tu cuento a la plataforma "Biblioteca de Cuentos" para que los niños puedan disfrutarlo.</p>
+    
+        <ul>
+          <li>Consejo: Asegúrate de que el texto no supere 300 caracteres por página.</li>
+          <li>Consejo: Revisa que el texto y las imágenes estén alineados.</li>
+        </ul>
+        
+        <h5>Cosas que necesitas</h5>
+        <p>Antes de comenzar, asegúrate de tener lo siguiente listo:</p>
       <ul>
         <li>El texto de tu cuento ya escrito y dividido en páginas. Por ejemplo, si tu cuento tiene 5 páginas, debes tener el texto de cada página preparado.</li>
         <li>Las imágenes generadas para tu cuento, incluyendo:
@@ -46,8 +130,8 @@
           Asegúrate de que las imágenes estén guardadas en tu computadora en formato <b>.jpg.</b>
         </li>
       </ul>
-      
-      <!-- Pasos para cargar el cuento -->
+        
+         <!-- Pasos para cargar el cuento -->
       <h5 class="mt-4">Pasos para cargar tu cuento</h5>
       <ol>
         <li>
@@ -114,34 +198,30 @@
         </li>
       </ol>
       <p>Una vez completados estos pasos, habrás previsualizado y subido correctamente tu cuento a la plataforma.</p>
-
-      <!-- Nueva sección: Para más información -->
-      <h4 class="mt-4">Para más información</h4>
-      <p>Si necesitas una guía más detallada, puedes ver nuestro video tutorial en YouTube:</p>
-      
-      <!-- Opción 1: Enlace al video -->
-      <p>
-        <a href="https://youtu.be/ye-gZ5YylEA?si=KFfXKhXqNZxoqMHc" target="_blank" class="btn btn-primary">
-          Ver video tutorial
-        </a>
-      </p>
-
-      <!---->
-      <div class="text-center mt-3">
-        <iframe 
-          width="560" 
-          height="315" 
-          src="https://www.youtube.com/embed/ye-gZ5YylEA" 
-          title="Video tutorial" 
-          frameborder="0" 
-          allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-          allowfullscreen
-          loading="lazy">
-        </iframe>
       </div>
-      
+    </div>
+
+
+    <!-- Botón de descarga al final -->
+    <p class="text-center mt-4">
+      <a href="../assets/guia/GuiaCompleta.pdf" class="btn btn-success" download>Descargar Guía Completa (PDF)</a>
+    </p>
+
+    <!-- Mantener sección de video tutorial -->
+    <h4 class="mt-4">Para más información</h4>
+    <p>Consulta nuestro video tutorial en YouTube para una guía visual:</p>
+
+    <h5>Como subir tu cuento a la pagina</h5>
+    <div class="text-center mt-3">
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/ye-gZ5YylEA" title="Video tutorial" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+    </div>
+
+    <h5>Como crear tu cuento</h5>
+    <div class="text-center mt-3">
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/ye-gZ5YylEA" title="Video tutorial" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
     </div>
   </div>
+</div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
